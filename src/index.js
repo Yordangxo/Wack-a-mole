@@ -1,29 +1,28 @@
-const holes = document.querySelectorAll('.hole');
-const moles = document.querySelectorAll('.mole');
-const startButton = document.querySelector('#start');
+const holes = document.querySelectorAll(".hole");
+const moles = document.querySelectorAll(".mole");
+const startButton = document.querySelector("#start");
 // TODO: Add the missing query selectors:
-const score; // Use querySelector() to get the score element
-const timerDisplay; // use querySelector() to get the timer element.
+const score = document.querySelector("#score"); // Use querySelector() to get the score element
+const timerDisplay = document.querySelector("#timer"); // use querySelector() to get the timer element.
 
 let time = 0;
 let timer;
 let lastHole = 0;
 let points = 0;
-let difficulty = "hard";
+let difficulty = "easy";
 
 /**
  * Generates a random integer within a range.
  *
- * The function takes two values as parameters that limits the range 
+ * The function takes two values as parameters that limits the range
  * of the number to be generated. For example, calling randomInteger(0,10)
  * will return a random integer between 0 and 10. Calling randomInteger(10,200)
  * will return a random integer between 10 and 200.
  *
  */
 function randomInteger(min, max) {
-  // return Math.floor(Math.random() * (max - min + 1)) + min;
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
 /**
  * Sets the time delay given a difficulty parameter.
  *
@@ -33,7 +32,7 @@ function randomInteger(min, max) {
  * return 1000. If difficulty is set to "hard" it should return a randomInteger between
  * 600 and 1200.
  *
- * Example: 
+ * Example:
  * setDelay("easy") //> returns 1500
  * setDelay("normal") //> returns 1000
  * setDelay("hard") //> returns 856 (returns a random number between 600 and 1200).
@@ -41,7 +40,13 @@ function randomInteger(min, max) {
  */
 function setDelay(difficulty) {
   // TODO: Write your code here.
-  
+  if (difficulty === "easy") {
+    return 1500;
+  } else if (difficulty === "normal") {
+    return 1000;
+  } else if (difficulty === "hard") {
+    return randomInteger(600, 1200);
+  }
 }
 
 /**
@@ -51,205 +56,250 @@ function setDelay(difficulty) {
  * 1. generate a random integer from 0 to 8 and assign it to an index variable
  * 2. get a random hole with the random index (e.g. const hole = holes[index])
  * 3. if hole === lastHole then call chooseHole(holes) again.
- * 4. if hole is not the same as the lastHole then keep track of 
+ * 4. if hole is not the same as the lastHole then keep track of
  * it (lastHole = hole) and return the hole
  *
- * Example: 
+ * Example:
  * const holes = document.querySelectorAll('.hole');
  * chooseHole(holes) //> returns one of the 9 holes that you defined
  */
+
 function chooseHole(holes) {
   // TODO: Write your code here.
+  const index = randomInteger(0, holes.length - 1);
+  const hole = holes[index];
 
-}
+  if (hole === lastHole) {
+    return chooseHole(holes);
+  }
 
-/**
-*
-* Calls the showUp function if time > 0 and stops the game if time = 0.
-*
-* The purpose of this function is simply to determine if the game should
-* continue or stop. The game continues if there is still time `if(time > 0)`.
-* If there is still time then `showUp()` needs to be called again so that
-* it sets a different delay and a different hole. If there is no more time
-* then it should call the `stopGame()` function. The function also needs to
-* return the timeoutId if the game continues or the string "game stopped"
-* if the game is over.
-*
-*  // if time > 0:
-*  //   timeoutId = showUp()
-*  //   return timeoutId
-*  // else
-*  //   gameStopped = stopGame()
-*  //   return gameStopped
-*
-*/
-function gameOver() {
-  // TODO: Write your code here
-  
-}
-
-/**
-*
-* Calls the showAndHide() function with a specific delay and a hole.
-*
-* This function simply calls the `showAndHide` function with a specific
-* delay and hole. The function needs to call `setDelay()` and `chooseHole()`
-* to call `showAndHide(hole, delay)`.
-*
-*/
-function showUp() {
-  let delay = 0; // TODO: Update so that it uses setDelay()
-  const hole = 0;  // TODO: Update so that it use chooseHole()
-  return showAndHide(hole, delay);
-}
-
-/**
-*
-* The purpose of this function is to show and hide the mole given
-* a delay time and the hole where the mole is hidden. The function calls
-* `toggleVisibility` to show or hide the mole. The function should return
-* the timeoutID
-*
-*/
-function showAndHide(hole, delay){
-  // TODO: call the toggleVisibility function so that it adds the 'show' class.
-  
-  const timeoutID = setTimeout(() => {
-    // TODO: call the toggleVisibility function so that it removes the 'show' class when the timer times out.
-    
-    gameOver();
-  }, 0); // TODO: change the setTimeout delay to the one provided as a parameter
-  return timeoutID;
-}
-
-/**
-*
-* Adds or removes the 'show' class that is defined in styles.css to 
-* a given hole. It returns the hole.
-*
-*/
-function toggleVisibility(hole){
-  // TODO: add hole.classList.toggle so that it adds or removes the 'show' class.
-  
+  lastHole = hole;
   return hole;
 }
 
 /**
-*
-* This function increments the points global variable and updates the scoreboard.
-* Use the `points` global variable that is already defined and increment it by 1.
-* After the `points` variable is incremented proceed by updating the scoreboard
-* that you defined in the `index.html` file. To update the scoreboard you can use 
-* `score.textContent = points;`. Use the comments in the function as a guide 
-* for your implementation:
-*
-*/
+ *
+ * Calls the showUp function if time > 0 and stops the game if time = 0.
+ *
+ * The purpose of this function is simply to determine if the game should
+ * continue or stop. The game continues if there is still time `if(time > 0)`.
+ * If there is still time then `showUp()` needs to be called again so that
+ * it sets a different delay and a different hole. If there is no more time
+ * then it should call the `stopGame()` function. The function also needs to
+ * return the timeoutId if the game continues or the string "game stopped"
+ * if the game is over.
+ *
+ *  // if time > 0:
+ *  //   timeoutId = showUp()
+ *  //   return timeoutId
+ *  // else
+ *  //   gameStopped = stopGame()
+ *  //   return gameStopped
+ *
+ */
+function gameOver() {
+  if (time > 0) {
+    const timeoutId = showUp();
+    return timeoutId;
+  } else {
+    const gameStopped = stopGame();
+    return gameStopped;
+  }
+}
+
+/**
+ *
+ * Calls the showAndHide() function with a specific delay and a hole.
+ *
+ * This function simply calls the `showAndHide` function with a specific
+ * delay and hole. The function needs to call `setDelay()` and `chooseHole()`
+ * to call `showAndHide(hole, delay)`.
+ *
+ */
+
+/**
+ *
+ * The purpose of this function is to show and hide the mole given
+ * a delay time and the hole where the mole is hidden. The function calls
+ * `toggleVisibility` to show or hide the mole. The function should return
+ * the timeoutID
+ *
+ */
+function showAndHide(hole, delay) {
+  toggleVisibility(hole); // Show the mole initially
+
+  const timeoutID = setTimeout(() => {
+    toggleVisibility(hole); // Hide the mole after the delay
+    gameOver();
+  }, delay);
+
+  return timeoutID;
+}
+
+/**
+ *
+ * Adds or removes the 'show' class that is defined in styles.css to
+ * a given hole. It returns the hole.
+ *
+ */
+function toggleVisibility(hole) {
+  // TODO: add hole.classList.toggle so that it adds or removes the 'show' class.
+  hole.classList.toggle("show");
+  return hole;
+}
+
+function showUp() {
+  const delay = setDelay(difficulty); // Call setDelay() to get the desired delay value
+  const hole = chooseHole(holes); // Call chooseHole() to get the desired hole
+  return showAndHide(hole, delay); // Call showAndHide() with the hole and delay values
+}
+/**
+ *
+ * This function increments the points global variable and updates the scoreboard.
+ * Use the `points` global variable that is already defined and increment it by 1.
+ * After the `points` variable is incremented proceed by updating the scoreboard
+ * that you defined in the `index.html` file. To update the scoreboard you can use
+ * `score.textContent = points;`. Use the comments in the function as a guide
+ * for your implementation:
+ *
+ */
 function updateScore() {
   // TODO: Write your code here
+  points += 1;
+  score.textContent = points;
+
+  const scoreSound = document.querySelector("#scoreSound");
+  scoreSound.currentTime = 0;
+  scoreSound.play();
 
   return points;
 }
 
 /**
-*
-* This function clears the score by setting `points = 0`. It also updates
-* the board using `score.textContent = points`. The function should return
-* the points.
-*
-*/
+ *
+ * This function clears the score by setting `points = 0`. It also updates
+ * the board using `score.textContent = points`. The function should return
+ * the points.
+ *
+ */
 function clearScore() {
   // TODO: Write your code here
-  // points = 0;
-  // score.textContent = points;
+  points = 0;
+  score.textContent = points;
   return points;
 }
 
 /**
-*
-* Updates the control board with the timer if time > 0
-*
-*/
+ *
+ * Updates the control board with the timer if time > 0
+ *
+ */
 function updateTimer() {
   // TODO: Write your code here.
   // hint: this code is provided to you in the instructions.
-  
+  if (time > 0) {
+    time -= 1;
+    timerDisplay.textContent = time;
+  }
   return time;
 }
 
 /**
-*
-* Starts the timer using setInterval. For each 1000ms (1 second)
-* the updateTimer function get called. This function is already implemented
-*
-*/
+ *
+ * Starts the timer using setInterval. For each 1000ms (1 second)
+ * the updateTimer function get called. This function is already implemented
+ *
+ */
 function startTimer() {
   // TODO: Write your code here
-  // timer = setInterval(updateTimer, 1000);
+  timer = setInterval(updateTimer, 1000);
   return timer;
 }
 
 /**
-*
-* This is the event handler that gets called when a player
-* clicks on a mole. The setEventListeners should use this event
-* handler (e.g. mole.addEventListener('click', whack)) for each of
-* the moles.
-*
-*/
+ *
+ * This is the event handler that gets called when a player
+ * clicks on a mole. The setEventListeners should use this event
+ * handler (e.g. mole.addEventListener('click', whack)) for each of
+ * the moles.
+ *
+ */
 function whack(event) {
-  // TODO: Write your code here.
-  // call updateScore()
+  if (time > 0) {
+    // TODO: Write your code here.
+    updateScore();
+  }
   return points;
 }
 
 /**
-*
-* Adds the 'click' event listeners to the moles. See the instructions
-* for an example on how to set event listeners using a for loop.
-*/
-function setEventListeners(){
+ *
+ * Adds the 'click' event listeners to the moles. See the instructions
+ * for an example on how to set event listeners using a for loop.
+ */
+function setEventListeners() {
   // TODO: Write your code here
+  moles.forEach(function (mole) {
+    mole.addEventListener("click", whack);
+  });
 
   return moles;
 }
 
 /**
-*
-* This function sets the duration of the game. The time limit, in seconds,
-* that a player has to click on the sprites.
-*
-*/
+ *
+ * This function sets the duration of the game. The time limit, in seconds,
+ * that a player has to click on the sprites.
+ *
+ */
 function setDuration(duration) {
   time = duration;
   return time;
 }
 
 /**
-*
-* This function is called when the game is stopped. It clears the
-* timer using clearInterval. Returns "game stopped".
-*
-*/
-function stopGame(){
+ *
+ * This function is called when the game is stopped. It clears the
+ * timer using clearInterval. Returns "game stopped".
+ *
+ */
+function stopGame() {
   // stopAudio(song);  //optional
   clearInterval(timer);
   return "game stopped";
 }
 
 /**
-*
-* This is the function that starts the game when the `startButton`
-* is clicked.
-*
-*/
-function startGame(){
-  //setDuration(10);
-  //showUp();
+ *
+ * This is the function that starts the game when the `startButton`
+ * is clicked.
+ *
+ */
+function startGame() {
+  setDuration(25);
+  points = 0;
+  score.textContent = points;
+  difficulty = "easy";
+
+  const difficultyButtons = document.querySelectorAll(".difficulty");
+  difficultyButtons.forEach(function (button) {
+    if (button.checked) {
+      difficulty = button.value;
+    }
+  });
+
+  const title = document.querySelector("h1");
+  title.style.fontSize = "40px";
+  title.style.marginTop = "50px";
+  title.style.marginBottom = "20px";
+
+  startTimer();
+  setEventListeners();
+  showUp();
   return "game started";
 }
 
 startButton.addEventListener("click", startGame);
-
 
 // Please do not modify the code below.
 // Used for testing purposes.

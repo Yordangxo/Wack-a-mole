@@ -168,10 +168,6 @@ function updateScore() {
   points += 1;
   score.textContent = points;
 
-  const scoreSound = document.querySelector("#scoreSound");
-  scoreSound.currentTime = 0;
-  scoreSound.play();
-
   return points;
 }
 
